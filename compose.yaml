@@ -1,4 +1,3 @@
-
 services:
   db:
     image: postgres:13
@@ -35,6 +34,21 @@ services:
     volumes:
       - kafka_data:/var/lib/kafka/data
 
+  spark:
+    image: apache/spark:3.5.7
+    container_name: gridwatch-spark
+    user: root
+    command: ["tail", "-f", "/dev/null"]
+    working_dir: /opt/spark/work-dir
+    volumes:
+      - ./spark:/opt/spark/work-dir
+      - spark_checkpoints:/opt/spark/checkpoints
+    environment:
+      SPARK_LOCAL_IP: 127.0.0.1
+    mem_limit: 4g
+
+
 volumes:
   db_data:
   kafka_data:
+  spark_checkpoints:
