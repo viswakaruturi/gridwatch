@@ -120,9 +120,7 @@ def main():
         raise ValueError("EIA_API_KEY not found in .env")
 
     # Use a completed hour from two days ago for the initial test.
-    test_hour = (
-        datetime.now(timezone.utc) - timedelta(days=2)
-    ).replace(minute=0, second=0, microsecond=0)
+    test_hour = (datetime.now(timezone.utc) - timedelta(days=2)).replace(minute=0, second=0, microsecond=0)
 
     start = test_hour.strftime("%Y-%m-%dT%H")
     end = start
