@@ -1,3 +1,4 @@
+-- 1
 CREATE OR REPLACE VIEW vw_forecast_vs_actual AS
 SELECT
     actual.respondent,
@@ -19,6 +20,7 @@ WHERE
     actual.type = 'D'
     AND forecast.type = 'DF';
 
+-- 2
 CREATE OR REPLACE VIEW vw_forecast_accuracy_summary AS
 SELECT
     respondent,
@@ -31,5 +33,22 @@ SELECT
 FROM
     vw_forecast_vs_actual
 GROUP BY
+    respondent,
+    respondent_name;
+
+-- 3
+CREATE OR REPLACE VIEW vw_forecast_error_trends AS
+SELECT
+    (period AT TIME ZONE 'UTC')::date AS forecast_date,
+    respondent,
+    respondent_name,
+    ROUND(AVG(absolute_error), 2) AS daily_mae_mwh,
+    ROUND(AVG(percentage_error), 2) AS daily_mape_percent,
+    ROUND(AVG(signed_error), 2) AS daily_signed_error_mwh,
+    COUNT(*) AS matched_forecasts
+FROM
+    vw_forecast_vs_actual
+GROUP BY
+    forecast_date,
     respondent,
     respondent_name;

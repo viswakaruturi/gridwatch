@@ -1,3 +1,4 @@
+-- 1
 SELECT
     *
 FROM
@@ -5,6 +6,7 @@ FROM
 LIMIT
     10;
 
+-- 2
 SELECT
     value,
     value_units,
@@ -18,6 +20,7 @@ ORDER BY
 LIMIT
     20;
 
+-- 3
 SELECT DISTINCT
     respondent,
     respondent_name
@@ -26,6 +29,7 @@ FROM
 ORDER BY
     respondent;
 
+-- 4
 SELECT
     type,
     COUNT(*) AS record_count
@@ -34,7 +38,7 @@ FROM
 GROUP BY
     type;
 
-* /
+-- 5
 SELECT
     AVG(value) AS average_demand_mwh
 FROM
@@ -56,6 +60,7 @@ GROUP BY
 ORDER BY
     average_demand DESC;
 
+-- 6
 SELECT
     respondent,
     respondent_name,
@@ -72,6 +77,7 @@ ORDER BY
 LIMIT
     10;
 
+-- 7
 SELECT
     respondent,
     respondent_name,
@@ -88,7 +94,7 @@ HAVING
 ORDER BY
     average_demand DESC;
 
-* /
+-- 8
 SELECT
     actual.period,
     actual.respondent,
@@ -104,6 +110,7 @@ WHERE
 LIMIT
     10;
 
+-- 9
 SELECT
     actual.period,
     actual.respondent,
@@ -121,6 +128,7 @@ ORDER BY
 LIMIT
     10;
 
+-- 10
 SELECT
     actual.respondent,
     COUNT(*) AS missing_forecast_count
@@ -139,6 +147,7 @@ ORDER BY
 LIMIT
     10;
 
+-- 11
 WITH
     missing_forecasts AS (
         SELECT
