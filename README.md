@@ -8,49 +8,35 @@ GridWatch ingests hourly electricity data from the [U.S. Energy Information Admi
 
 ## Architecture
 
-```mermaid
-flowchart TD
-    A[Apache Airflow<br/>30-minute schedule and recovery checks] --> B[Calculate ingestion window]
-    B --> C{Processing needed?}
-    C -->|No| Z[Skip]
-    C -->|Yes| D[Kafka + PostgreSQL readiness]
-    D --> E[Python ingestion<br/>EIA API]
-    E --> F[(Apache Kafka<br/>electricity.raw)]
-    F --> G[Apache Spark<br/>Structured Streaming]
-    G --> H[(PostgreSQL<br/>electricity + SQL views)]
-    H --> I[Data quality validation]
-    I --> J[Advance successful-run checkpoint]
-    H --> K[Streamlit dashboard]
-    H --> L[FastAPI REST service]
-```
+![GridWatch architecture diagram](docs/architecture.svg)
 
 The core services run locally in Docker. Airflow starts the processing job directly using a compatible PySpark runtime and shares the persistent Spark checkpoint volume. The dashboard and API currently connect to local PostgreSQL; their cloud deployment is a separate planned phase.
 
 ## Tech stack
 
-| Component      | Technology                                        | Role                                         |
-| -------------- | ------------------------------------------------- | -------------------------------------------- |
-| Data source    | EIA Open Data API                                 | Hourly U.S. grid measurements                |
-| Ingestion      | Python, Requests                                  | Pagination, validation, incremental backfill |
-| Messaging      | Apache Kafka, Confluent Python client             | Buffered electricity events                  |
-| Processing     | Apache Spark 3.5.7 / PySpark Structured Streaming | Parse, validate, deduplicate, upsert         |
-| Storage        | PostgreSQL 13                                     | Electricity records and analytical SQL views |
-| Orchestration  | Apache Airflow 3.1.8                              | Scheduling, retries, dependencies, recovery  |
-| API            | FastAPI                                           | Read-only analytical endpoints               |
-| Visualization  | Streamlit, pandas, Plotly                         | Interactive dashboard                        |
-| Infrastructure | Docker Compose                                    | Local services and persistent volumes        |
-| Testing        | pytest, unittest, FastAPI TestClient              | API and recovery tests                       |
+| Component | Technology | Role |
+| --- | --- | --- |
+| Data source | EIA Open Data API | Hourly U.S. grid measurements |
+| Ingestion | Python, Requests | Pagination, validation, incremental backfill |
+| Messaging | Apache Kafka, Confluent Python client | Buffered electricity events |
+| Processing | Apache Spark 3.5.7 / PySpark Structured Streaming | Parse, validate, deduplicate, upsert |
+| Storage | PostgreSQL 13 | Electricity records and analytical SQL views |
+| Orchestration | Apache Airflow 3.1.8 | Scheduling, retries, dependencies, recovery |
+| API | FastAPI | Read-only analytical endpoints |
+| Visualization | Streamlit, pandas, Plotly | Interactive dashboard |
+| Infrastructure | Docker Compose | Local services and persistent volumes |
+| Testing | pytest, unittest, FastAPI TestClient | API and recovery tests |
 
 ## Electricity data
 
 GridWatch ingests four EIA measurement types:
 
-| Code | Measurement               | Description                                |
-| ---- | ------------------------- | ------------------------------------------ |
-| `D`  | Actual demand             | Reported electricity demand                |
-| `DF` | Day-ahead demand forecast | Forecasted demand                          |
-| `NG` | Net generation            | Reported net electricity generation        |
-| `TI` | Total interchange         | Positive net exports; negative net imports |
+| Code | Measurement | Description |
+| --- | --- | --- |
+| `D` | Actual demand | Reported electricity demand |
+| `DF` | Day-ahead demand forecast | Forecasted demand |
+| `NG` | Net generation | Reported net electricity generation |
+| `TI` | Total interchange | Positive net exports; negative net imports |
 
 Energy readings are expressed in **MWh**. The grid-balance relationship used for quality analysis is `D = NG - TI`, where all values refer to the **same respondent and hour**.
 
@@ -66,7 +52,7 @@ Energy readings are expressed in **MWh**. The grid-balance relationship used for
 6. PostgreSQL quality validation checks for demand records on the target date, and logs per-type coverage.
 7. The successful-run checkpoint advances only when the upstream tasks succeed.
 
-Airflow's 30-minute schedule permits recovery after local downtime _once Docker and its services are running again_. It does **not** execute while the laptop is asleep or switched off. The local pipeline was observed recovering the missed November 20–22, 2026 dates and advancing its successful-run checkpoint to November 22. This is an observed local test, not a cloud uptime guarantee.
+Airflow's 30-minute schedule permits recovery after local downtime *once Docker and its services are running again*. It does **not** execute while the laptop is asleep or switched off. The local pipeline was observed recovering the missed November 20–22, 2026 dates and advancing its successful-run checkpoint to November 22. This is an observed local test, not a cloud uptime guarantee.
 
 ## SQL analytics
 
@@ -104,14 +90,14 @@ python -m uvicorn api.main:app --reload
 
 Interactive documentation: `http://127.0.0.1:8000/docs`
 
-| Method | Endpoint                              | Description                  |
-| ------ | ------------------------------------- | ---------------------------- |
-| GET    | `/health`                             | API and PostgreSQL health    |
-| GET    | `/api/respondents`                    | Available respondents        |
-| GET    | `/api/demand/{respondent}`            | Hourly actual demand         |
-| GET    | `/api/forecast-accuracy/{respondent}` | Aggregate forecast accuracy  |
-| GET    | `/api/grid-operations/{respondent}`   | Grid-balance measurements    |
-| GET    | `/api/data-quality/{respondent}`      | Freshness and daily coverage |
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| GET | `/health` | API and PostgreSQL health |
+| GET | `/api/respondents` | Available respondents |
+| GET | `/api/demand/{respondent}` | Hourly actual demand |
+| GET | `/api/forecast-accuracy/{respondent}` | Aggregate forecast accuracy |
+| GET | `/api/grid-operations/{respondent}` | Grid-balance measurements |
+| GET | `/api/data-quality/{respondent}` | Freshness and daily coverage |
 
 Example:
 

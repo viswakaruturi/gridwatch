@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="850" viewBox="0 0 1600 850" role="img" aria-label="GridWatch pipeline architecture: Airflow schedules ingestion from the EIA API, through Kafka and Spark into PostgreSQL, then quality checks, checkpointing, dashboard and API.">
+<title>GridWatch: end-to-end data pipeline</title>
+<defs>
+ <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#93a6c6"/></marker>
+ <style>
+  .edge { fill:none; stroke:#93a6c6; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; marker-end:url(#arrow) }
+  .node { stroke-width:2; rx:15; ry:15 }
+  .name { font-family:Arial,DejaVu Sans,sans-serif; fill:#f6f8ff; font-size:26px; font-weight:700; text-anchor:middle }
+  .sub { font-family:Arial,DejaVu Sans,sans-serif; fill:#cbd7e9; font-size:18px; text-anchor:middle }
+  .label { font-family:Arial,DejaVu Sans,sans-serif; font-size:20px; font-weight:700; fill:#dbe6fa; text-anchor:middle }
+  .heading { font-family:Arial,DejaVu Sans,sans-serif; font-size:31px; font-weight:700; fill:#fafbff }
+  .small { font-family:Arial,DejaVu Sans,sans-serif; font-size:18px; fill:#aebfdb }
+ </style>
+</defs>
+<rect width="1600" height="850" fill="#0b1222"/>
+<text x="60" y="49" class="heading">GridWatch | Data pipeline and analytics</text>
+
+<path class="edge" d="M 365 145 H 449"/>
+<path class="edge" d="M 750 145 H 798"/>
+<path class="edge" d="M 1050 119 H 1157 V 95 H 1289"/>
+<path class="edge" d="M 1050 156 H 1157 V 220 H 1259"/>
+<path class="edge" d="M 1395 264 V 329"/>
+<path class="edge" d="M 1260 377 H 1151"/>
+<path class="edge" d="M 880 377 H 771"/>
+<path class="edge" d="M 500 377 H 391"/>
+<path class="edge" d="M 255 425 V 554"/>
+<path class="edge" d="M 390 604 H 499"/>
+<path class="edge" d="M 350 425 V 488 H 1015 V 554"/>
+<path class="edge" d="M 1015 655 V 684 H 935 V 714"/>
+<path class="edge" d="M 1015 684 H 1315 V 714"/>
+<rect class="node" x="65" y="95" width="300" height="100" fill="#352852" stroke="#a992ef"/>
+<text class="name" x="215.0" y="140.0">Apache Airflow</text>
+<text class="sub" x="215.0" y="171.0">Every 30 minutes</text>
+<rect class="node" x="450" y="95" width="300" height="100" fill="#172f51" stroke="#5c9bec"/>
+<text class="name" x="600.0" y="140.0">Calculate window</text>
+<text class="sub" x="600.0" y="171.0">Checkpoint-based range</text>
+<polygon points="925,80 1050,145 925,210 800,145" fill="#3a2c1f" stroke="#dfae67" stroke-width="2"/>
+<text class="name" x="925" y="140" style="font-size:22px">Process new</text><text class="name" x="925" y="167" style="font-size:22px">data?</text>
+<rect class="node" x="1290" y="55" width="240" height="80" fill="#3a2c1f" stroke="#dfae67"/>
+<text class="name" x="1410.0" y="104.0">Skip this run</text>
+<rect class="node" x="1260" y="174" width="270" height="90" fill="#352852" stroke="#a992ef"/>
+<text class="name" x="1395.0" y="214.0">Check services</text>
+<text class="sub" x="1395.0" y="245.0">Kafka + PostgreSQL</text>
+<rect class="node" x="1260" y="330" width="270" height="95" fill="#172f51" stroke="#5c9bec"/>
+<text class="name" x="1395.0" y="372.5">Python ingestion</text>
+<text class="sub" x="1395.0" y="403.5">EIA Open Data API</text>
+<rect class="node" x="880" y="330" width="270" height="95" fill="#123c45" stroke="#55c4c4"/>
+<text class="name" x="1015.0" y="372.5">Apache Kafka</text>
+<text class="sub" x="1015.0" y="403.5">electricity.raw</text>
+<rect class="node" x="500" y="330" width="270" height="95" fill="#123c45" stroke="#55c4c4"/>
+<text class="name" x="635.0" y="372.5">Apache Spark</text>
+<text class="sub" x="635.0" y="403.5">Structured Streaming</text>
+<rect class="node" x="120" y="330" width="270" height="95" fill="#193d35" stroke="#5fc7a2"/>
+<text class="name" x="255.0" y="372.5">PostgreSQL</text>
+<text class="sub" x="255.0" y="403.5">Measurements + SQL views</text>
+<rect class="node" x="120" y="555" width="270" height="100" fill="#193d35" stroke="#5fc7a2"/>
+<text class="name" x="255.0" y="600.0">Validate records</text>
+<text class="sub" x="255.0" y="631.0">Data quality checks</text>
+<rect class="node" x="500" y="555" width="270" height="100" fill="#193d35" stroke="#5fc7a2"/>
+<text class="name" x="635.0" y="600.0">Save checkpoint</text>
+<text class="sub" x="635.0" y="631.0">Only after success</text>
+<rect class="node" x="880" y="555" width="270" height="100" fill="#172f51" stroke="#5c9bec"/>
+<text class="name" x="1015.0" y="600.0">Analytics access</text>
+<text class="sub" x="1015.0" y="631.0">Read-only database views</text>
+<rect class="node" x="820" y="715" width="230" height="80" fill="#172f51" stroke="#5c9bec"/>
+<text class="name" x="935.0" y="750.0">Streamlit</text>
+<text class="sub" x="935.0" y="781.0">Dashboard</text>
+<rect class="node" x="1200" y="715" width="230" height="80" fill="#172f51" stroke="#5c9bec"/>
+<text class="name" x="1315.0" y="750.0">FastAPI</text>
+<text class="sub" x="1315.0" y="781.0">REST endpoints</text>
+<text class="label" x="1206" y="84">No</text>
+<text class="label" x="1202" y="200">Yes</text>
+<text class="small" x="65" y="829">Local Docker infrastructure · UTC hourly electricity data · resumable incremental processing</text>
+</svg>
