@@ -1,3 +1,13 @@
-requests
-python-dotenv
-confluent-kafka
+# Local Windows Python environment: ingestion, dashboard, API, and tests.
+# Airflow and PySpark are installed separately in airflow/Dockerfile.
+requests>=2.32,<3
+python-dotenv>=1,<2
+confluent-kafka>=2,<3
+psycopg2-binary>=2.9,<3
+pandas>=2.2,<3
+SQLAlchemy>=2,<3
+streamlit>=1.40,<2
+plotly>=5.24,<7
+fastapi[standard]>=0.115,<1
+pytest>=8,<10
+httpx>=0.27,<1

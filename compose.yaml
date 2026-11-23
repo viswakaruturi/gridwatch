@@ -1,5 +1,6 @@
 services:
   db:
+    restart: unless-stopped
     image: postgres:13
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -11,6 +12,7 @@ services:
       - db_data:/var/lib/postgresql/data
 
   kafka:
+    restart: unless-stopped
     image: confluentinc/cp-kafka:8.4.0
     hostname: kafka
     ports:
@@ -35,6 +37,7 @@ services:
       - kafka_data:/var/lib/kafka/data
 
   spark:
+    restart: unless-stopped
     image: apache/spark:3.5.7
     container_name: gridwatch-spark
     user: root

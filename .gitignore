@@ -1,3 +1,4 @@
+
 # Environment variables and secrets
 .env
 .env.*
@@ -8,17 +9,28 @@ __pycache__/
 *.py[cod]
 .venv/
 venv/
+.pytest_cache/
+.coverage
+htmlcov/
 
 # IDE
 .vscode/
 .idea/
 
-# Logs
+# Runtime logs
 *.log
+logs/
+airflow/logs/
+
+# Pipeline checkpoints and state
+.state/
+spark/checkpoints/
+
+# Airflow local state
+airflow/airflow.db*
+airflow/simple_auth_manager_passwords.json*
+airflow/airflow.cfg
 
 # OS
 .DS_Store
 Thumbs.db
-
-.state/
-logs/
