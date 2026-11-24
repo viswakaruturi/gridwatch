@@ -8,6 +8,12 @@ load_dotenv()
 
 
 def get_connection():
+    if os.getenv("GRIDWATCH_ENV") == "production":
+        return psycopg2.connect(
+            os.environ["NEON_DATABASE_URL"],
+            connect_timeout=10,
+        )
+
     return psycopg2.connect(
         host=os.getenv("POSTGRES_HOST", "localhost"),
         port=os.getenv("POSTGRES_PORT", "5432"),
