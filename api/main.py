@@ -1,4 +1,3 @@
-
 from contextlib import closing
 from datetime import date
 

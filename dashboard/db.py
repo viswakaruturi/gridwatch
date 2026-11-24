@@ -1,3 +1,4 @@
+
 import os
 from pathlib import Path
 
@@ -13,6 +14,19 @@ load_dotenv(PROJECT_ROOT / ".env")
 
 def get_engine():
     """Create a PostgreSQL connection engine."""
+
+    if os.getenv("GRIDWATCH_ENV") == "production":
+        neon_url = os.environ["NEON_DATABASE_URL"]
+
+        return create_engine(
+            neon_url.replace(
+                "postgresql://",
+                "postgresql+psycopg2://",
+                1,
+            ),
+            pool_pre_ping=True,
+            connect_args={"connect_timeout": 10},
+        )
 
     url = URL.create(
         drivername="postgresql+psycopg2",

@@ -1,5 +1,4 @@
-﻿
-import shutil
+﻿import shutil
 import subprocess
 import sys
 from datetime import date, timedelta
@@ -259,6 +258,16 @@ def gridwatch_pipeline():
                 flush=True,
             )
 
+    
+    @task(retries=2)
+    def sync_neon():
+        subprocess.run(
+            [
+                "python",
+                "/opt/gridwatch/ingestion/sync_neon.py",
+            ],
+            check=True,
+        )
 
     window = calculate_ingestion_window()
     should_process = check_if_processing_needed(window)
@@ -266,9 +275,11 @@ def gridwatch_pipeline():
     ingestion = fetch_and_publish_eia(window)
     spark = process_spark_stream()
     quality = validate_data_quality(window)
+    neon_sync_task = sync_neon()
     checkpoint = save_successful_checkpoint(window)
+    
 
-    should_process >> services >> ingestion >> spark >> quality >> checkpoint
+    should_process >> services >> ingestion >> spark >> quality >> neon_sync_task >> checkpoint
 
 
 
