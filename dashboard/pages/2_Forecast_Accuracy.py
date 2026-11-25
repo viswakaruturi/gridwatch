@@ -159,7 +159,7 @@ fig.update_layout(
     legend=dict(orientation="h", y=1.15),
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 
 st.divider()
@@ -195,7 +195,7 @@ else:
         )
 
         fig.update_layout(height=380)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     with right:
         fig = px.line(
@@ -211,7 +211,7 @@ else:
         )
 
         fig.update_layout(height=380)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     st.subheader("Daily Forecast Coverage")
 
@@ -230,7 +230,7 @@ else:
         yaxis=dict(range=[0, 25]),
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     if (daily_df["matched_forecasts"] < 24).any():
         st.warning(
@@ -284,7 +284,7 @@ fig.update_layout(
     height=390,
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 
 st.caption(
     "Positive errors indicate underforecasting; "

@@ -164,7 +164,7 @@ else:
         hovermode="x unified",
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     if (daily["reported_hours"] < 24).any():
         st.warning(
@@ -214,7 +214,7 @@ else:
             xaxis=dict(dtick=1),
         )
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     else:
         readable_table(hourly)
 
@@ -287,7 +287,7 @@ else:
         yaxis=dict(rangemode="tozero"),
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     readable_table(
         weekday,
@@ -396,7 +396,7 @@ else:
         hovermode="closest",
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     st.caption(
         "Anomalies use z-scores relative to the "

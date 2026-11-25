@@ -262,7 +262,7 @@ else:
 
         st.plotly_chart(
             fig,
-            use_container_width=True,
+            width="stretch",
         )
 
         st.metric(
@@ -372,7 +372,7 @@ else:
 
     st.plotly_chart(
         fig,
-        use_container_width=True,
+        width="stretch",
     )
 
     st.caption(
@@ -446,7 +446,7 @@ else:
 
     st.plotly_chart(
         fig,
-        use_container_width=True,
+        width="stretch",
     )
 
     readable_table(

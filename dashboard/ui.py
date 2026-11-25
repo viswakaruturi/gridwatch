@@ -196,7 +196,6 @@ def utc_display(df, columns):
     return result
 
 
-
 def readable_table(
     df,
     rename=None,
@@ -207,9 +206,8 @@ def readable_table(
     result = utc_display(df, timestamps)
 
     if missing_as_text:
-        result = result.astype(object).where(
-            pd.notna(result),
-            "Not reported at this timestamp",
+        result = result.astype("string").fillna(
+            "Not reported at this timestamp"
         )
 
     if rename:
@@ -217,7 +215,7 @@ def readable_table(
 
     dataframe_options = {
         "hide_index": True,
-        "use_container_width": True,
+        "width": "stretch",
     }
 
     if height is not None:
@@ -227,7 +225,6 @@ def readable_table(
         result,
         **dataframe_options,
     )
-
 
 
 def fmt_mwh(value, signed=False, decimals=0):

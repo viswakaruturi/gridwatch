@@ -186,7 +186,7 @@ else:
         margin=dict(l=10, r=10, t=20, b=20),
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 
 st.divider()
@@ -223,7 +223,7 @@ else:
         margin=dict(l=10, r=10, t=20, b=20),
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 
 st.divider()
