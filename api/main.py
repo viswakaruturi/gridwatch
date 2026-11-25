@@ -94,6 +94,15 @@ def get_respondents():
         "respondents": rows,
     }
 
+@app.get("/")
+def root():
+    return {
+        "project": "GridWatch",
+        "description": "U.S. Electricity Grid Monitoring and Analytics",
+        "status": "running",
+        "documentation": "/docs",
+        "health": "/health",
+    }
 
 @app.get("/api/demand/{respondent}")
 def get_demand(
